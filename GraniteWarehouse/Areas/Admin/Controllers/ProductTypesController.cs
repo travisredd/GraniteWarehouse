@@ -126,7 +126,5 @@ namespace GraniteWarehouse.Areas.Admin.Controllers
             return View(productType);
         }
 
-
-
     }
 }

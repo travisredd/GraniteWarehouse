@@ -15,6 +15,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Views\SpecialTags\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 
