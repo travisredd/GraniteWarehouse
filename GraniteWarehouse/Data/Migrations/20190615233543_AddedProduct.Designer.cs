@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraniteWarehouse.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190615222125_AddedProduct")]
+    [Migration("20190615233543_AddedProduct")]
     partial class AddedProduct
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
