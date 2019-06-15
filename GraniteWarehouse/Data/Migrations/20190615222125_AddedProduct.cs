@@ -2,7 +2,7 @@
 
 namespace GraniteWarehouse.Data.Migrations
 {
-    public partial class SpecialTags : Migration
+    public partial class AddedProduct : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
