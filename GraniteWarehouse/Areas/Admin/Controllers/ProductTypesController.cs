@@ -11,17 +11,18 @@ namespace GraniteWarehouse.Areas.Admin.Controllers
     [Area("Admin")]
     public class ProductTypesController : Controller
     {
-        //dependency injection 
         public readonly ApplicationDbContext _db;
+
         public ProductTypesController(ApplicationDbContext db)
         {
             _db = db;
         }
-
         public IActionResult Index()
         {
             return View(_db.ProductTypes.ToList());
         }
+
+
 
         //GET Create Action Method
         public IActionResult Create()
@@ -42,7 +43,6 @@ namespace GraniteWarehouse.Areas.Admin.Controllers
             }
             return View(productTypes);
         }
-
 
         //GET Edit Action Method
         public async Task<IActionResult> Edit(int? id)
@@ -79,7 +79,22 @@ namespace GraniteWarehouse.Areas.Admin.Controllers
             }
             return View(productTypes);
         }
+        //GET Details Action Method
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var productType = await _db.ProductTypes.FindAsync(id);
+            if (productType == null)
+            {
+                return NotFound();
+            }
+
+            return View(productType);
+        }
         //GET Delete Action Method
         public async Task<IActionResult> Delete(int? id)
         {
@@ -108,23 +123,6 @@ namespace GraniteWarehouse.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-        //GET Details Action Method
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var productType = await _db.ProductTypes.FindAsync(id);
-            if (productType == null)
-            {
-                return NotFound();
-            }
-
-            return View(productType);
-        }
-
     }
 }
+
