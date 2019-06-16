@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using GraniteWarehouse.Data;
+using GraniteWarehouse.Models;
 using GraniteWarehouse.Models.ViewModels;
 using GraniteWarehouse.Utility;
 using Microsoft.AspNetCore.Hosting.Internal;
@@ -50,7 +51,7 @@ namespace GraniteWarehouse.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePOST() //we have BingProperty so no parameters are necessary
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(ProductsVM);
             }
@@ -92,6 +93,47 @@ namespace GraniteWarehouse.Areas.Admin.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
+        }
+
+        //Get Edit
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProductsVM.Products = await _db.Products
+                                        .Include(m => m.SpecialTags)
+                                        .Include(m => m.ProductTypes)
+                                        .SingleOrDefaultAsync(m => m.Id == id);
+            if (ProductsVM.Products == null)
+            {
+                return NotFound();
+            }
+            return View(ProductsVM);
+        }
+
+        //Get Details
+        //Get Edit
+
+        public async Task<IActionResult> Deatils(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProductsVM.Products = await _db.Products
+                                        .Include(m => m.SpecialTags)
+                                        .Include(m => m.ProductTypes)
+                                        .SingleOrDefaultAsync(m => m.Id == id);
+            if (ProductsVM.Products == null)
+            {
+                return NotFound();
+            }
+            return View(ProductsVM);
         }
 
         //Post : Edit
@@ -145,7 +187,33 @@ namespace GraniteWarehouse.Areas.Admin.Controllers
 
 
 
+        //POST : Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            Products products = await _db.Products.FindAsync(id);
 
+            if (products == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var uploads = Path.Combine(webRootPath, SD.ImageFolder);
+                var extension = Path.GetExtension(products.Image);
+
+                if (System.IO.File.Exists(Path.Combine(uploads, products.Id + extension)))
+                {
+                    System.IO.File.Delete(Path.Combine(uploads, products.Id + extension));
+                }
+                _db.Products.Remove(products);
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+        }
 
     }
    
