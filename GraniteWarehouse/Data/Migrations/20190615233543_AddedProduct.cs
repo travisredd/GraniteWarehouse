@@ -17,7 +17,7 @@ namespace GraniteWarehouse.Data.Migrations
                      Name = table.Column<string>(nullable: false),
                      Price = table.Column<double>(nullable: false), 
                      Available = table.Column<bool>(nullable: false),
-                     Image = table.Column<string>(nullable: false),
+                     Image = table.Column<string>(nullable: true),
                      ShadeColor = table.Column<string>(nullable: false),
                      ProductTypeId = table.Column<int>(nullable: false),
                      SpecialTagsId = table.Column<int>(nullable: false)
